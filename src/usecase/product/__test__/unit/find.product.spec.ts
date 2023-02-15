@@ -1,5 +1,5 @@
 import Product from "../../../../domain/product/entity/product";
-import ProductFindUseCase from "../../find/product.find.usecase";
+import FindProductUseCase from "../../find/product.find.usecase";
 
 const product = new Product("123", "Product A", 10);
 
@@ -13,10 +13,10 @@ const MockRepository = () => {
 };
 
 describe("Unit Test find customer use case", () => {
-  let usecase: ProductFindUseCase;
+  let usecase: FindProductUseCase;
 
   beforeEach(() => {
-    usecase = new ProductFindUseCase(MockRepository());
+    usecase = new FindProductUseCase(MockRepository());
   });
   it("should find a product", async () => {
     const input = {
@@ -39,7 +39,7 @@ describe("Unit Test find customer use case", () => {
     productRepository.find.mockImplementation(() => {
       throw new Error("Customer not found");
     });
-    usecase = new ProductFindUseCase(productRepository);
+    usecase = new FindProductUseCase(productRepository);
 
     const input = {
       id: "123",

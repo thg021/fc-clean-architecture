@@ -1,4 +1,4 @@
-import ProductCreateUseCase from "../../create/create.product.usecase";
+import CreateProductUseCase from "../../create/create.product.usecase";
 
 const input = {
   name: "Product Name",
@@ -15,14 +15,14 @@ const MockRepository = () => {
 
 describe("Create Product", () => {
   let productRepository;
-  let productCreateUseCase: ProductCreateUseCase;
+  let createProductUseCase: CreateProductUseCase;
 
   beforeEach(() => {
     productRepository = MockRepository();
-    productCreateUseCase = new ProductCreateUseCase(productRepository);
+    createProductUseCase = new CreateProductUseCase(productRepository);
   });
   it("should create a new product", async () => {
-    const output = await productCreateUseCase.execute(input);
+    const output = await createProductUseCase.execute(input);
     expect(output).toEqual({
       id: expect.any(String),
       name: input.name,
@@ -32,7 +32,7 @@ describe("Create Product", () => {
 
   it("should thrown an error when name is missing", async () => {
     await expect(
-      productCreateUseCase.execute({ ...input, name: "" })
+      createProductUseCase.execute({ ...input, name: "" })
     ).rejects.toThrow("Name is required");
   });
 
@@ -40,7 +40,7 @@ describe("Create Product", () => {
     input.price = -1;
 
     await expect(
-      productCreateUseCase.execute({ ...input, price: -1 })
+      createProductUseCase.execute({ ...input, price: -1 })
     ).rejects.toThrow("Price must be greater than zero");
   });
 });
