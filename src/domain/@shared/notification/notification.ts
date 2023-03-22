@@ -9,7 +9,7 @@ export class Notification {
     this.errors.push(errors);
   }
 
-  message(context?: string): string[] {
+  message(context?: string): string {
     return this.errors
       .filter((item) => {
         if (context === undefined) {
@@ -22,6 +22,11 @@ export class Notification {
       })
       .map((item) => {
         return `${item.context}: ${item.message}`;
-      });
+      })
+      .join(", ");
+  }
+
+  hasErrors(): boolean {
+    return this.errors.length > 0;
   }
 }
