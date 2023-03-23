@@ -51,6 +51,13 @@ describe("E2E for test customer", () => {
       id: expect.any(String),
       ...data,
     });
+
+    const responseXml = await request(app)
+      .get("/customer")
+      .set("Accept", "application/xml")
+      .send();
+
+    expect(responseXml.text).toContain(`<?xml version="1.0" encoding="UTF-8"?`);
   });
 
   it("should return a empty array of costumer", async () => {
@@ -96,5 +103,17 @@ describe("E2E for test customer", () => {
     const findCustomer = await request(app).get(`/customer/fake_id`).send();
 
     expect(findCustomer.statusCode).toBe(500);
+  });
+
+  it("should be able to return xml", async () => {
+    const data = { ...customer };
+    const customer1 = await request(app).post("/customer").send(data);
+    const customer2 = await request(app).post("/customer").send(data);
+
+    const findCustomer = await request(app)
+      .get(`/customer/${customer1.body.id}`)
+      .set("Accept", "application/xml")
+      .send();
+    expect(findCustomer.status).toBe(200);
   });
 });
